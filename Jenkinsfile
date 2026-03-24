@@ -15,15 +15,7 @@ pipeline {
             }
         }
 
-        stage('Build Images') {
-            steps {
-                sh '''
-                docker build -t $FRONTEND_IMAGE ./frontend
-                docker build -t $BACKEND_IMAGE ./backend
-                '''
-            }
-        }
-
+        //  Login FIRST (important fix)
         stage('Docker Login') {
             steps {
                 withCredentials([usernamePassword(
@@ -36,6 +28,17 @@ pipeline {
             }
         }
 
+        //  Then Build
+        stage('Build Images') {
+            steps {
+                sh '''
+                docker build -t $FRONTEND_IMAGE ./frontend
+                docker build -t $BACKEND_IMAGE ./backend
+                '''
+            }
+        }
+
+        //  Then Push
         stage('Push Images') {
             steps {
                 sh '''
