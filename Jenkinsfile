@@ -11,14 +11,16 @@ pipeline {
 
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/nimishavarma27/fullstack-devops-project.git'
+                git branch: 'main', url: 'https://github.com/nimishavarma27/fullstack-devops-project.git'
             }
         }
 
         stage('Build Images') {
             steps {
-                sh 'docker build -t $FRONTEND_IMAGE ./frontend'
-                sh 'docker build -t $BACKEND_IMAGE ./backend'
+                sh '''
+                docker build -t $FRONTEND_IMAGE ./frontend
+                docker build -t $BACKEND_IMAGE ./backend
+                '''
             }
         }
 
@@ -36,8 +38,10 @@ pipeline {
 
         stage('Push Images') {
             steps {
-                sh 'docker push $FRONTEND_IMAGE'
-                sh 'docker push $BACKEND_IMAGE'
+                sh '''
+                docker push $FRONTEND_IMAGE
+                docker push $BACKEND_IMAGE
+                '''
             }
         }
     }
