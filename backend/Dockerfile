@@ -1,8 +1,10 @@
 FROM python:3.10
 
 WORKDIR /app
-COPY . .
 
-RUN pip install flask
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
 
 CMD ["python", "app.py"]
